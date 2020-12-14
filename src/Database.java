@@ -7,6 +7,24 @@ public class Database {
     private Person teachers = new Person();
     private List<Course> courseList = new ArrayList<>();
 
+    List<Lesson> monday = new ArrayList();
+    List<Lesson> tuesday = new ArrayList();
+    List<Lesson> wednesday = new ArrayList();
+    List<Lesson> thursday = new ArrayList();
+    List<Lesson> friday = new ArrayList();
+
+    public Person getStudents() {
+        return students;
+    }
+
+    public Person getTeachers() {
+        return teachers;
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
     public void addCourse(Course course) {
         courseList.add(course);
     }
@@ -102,6 +120,22 @@ public class Database {
         return textToPrint;
     }
 
+    public void addMondayLesson(Lesson lesson){
+        this.monday.add(lesson);
+    }
+    public void addTuesdayLesson(Lesson lesson){
+        this.tuesday.add(lesson);
+    }
+    public void addWednesdayLesson(Lesson lesson){
+        this.wednesday.add(lesson);
+    }
+    public void addThursdayLesson(Lesson lesson){
+        this.thursday.add(lesson);
+    }
+    public void addFridayLesson(Lesson lesson){
+        this.friday.add(lesson);
+    }
+
 
     public Database() {
 
@@ -170,5 +204,22 @@ public class Database {
         courseFour.addStudent(studentFour);
         courseFour.addStudent(studentFive);
         courseFour.addStudent(studentOne);
+
+        addMondayLesson(new Lesson("Java", "09:00", "12:00"));
+        addMondayLesson(new Lesson("Svenska" ,"13:00","15:00"));
+
+        addTuesdayLesson(new Lesson("Matematik", "10:00", "12:00"));
+        addTuesdayLesson(new Lesson("Idrott", "13:00", "15:00"));
+
+        addWednesdayLesson(new Lesson("Java", "08:00", "12:00"));
+        addWednesdayLesson(new Lesson("Matematik", "13:00", "15:00"));
+
+        addThursdayLesson(new Lesson("Svenska", "10:00", "12:00"));
+        addThursdayLesson(new Lesson("Idrott", "13:00", "15:00"));
+
+        addFridayLesson(new Lesson("Java", "09:00", "12:00"));
+        addFridayLesson(new Lesson("Matematik", "13:00", "15:00"));
+
+
     }
 }

@@ -52,9 +52,13 @@ public class UserLoggedIn extends JFrame {
         courseSearch.addActionListener(e->{
             if (!searchField.getText().isEmpty()) {
                 Course course = d.searchCourse(searchField.getText());
-                if (course == null)
+                if (course == null){
                     infoField.setText("Kursen finns inte");
-                else infoField.setText(d.printCourse(searchField.getText()));
+                }
+                else{
+                    infoField.setText(d.printCourse(searchField.getText()));
+                }
+
             }
         });
 
