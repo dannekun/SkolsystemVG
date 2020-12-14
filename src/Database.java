@@ -7,11 +7,33 @@ public class Database {
     private Person teachers = new Person();
     private List<Course> courseList = new ArrayList<>();
 
-    List<Lesson> monday = new ArrayList();
-    List<Lesson> tuesday = new ArrayList();
-    List<Lesson> wednesday = new ArrayList();
-    List<Lesson> thursday = new ArrayList();
-    List<Lesson> friday = new ArrayList();
+   private List<Lesson> monday = new ArrayList();
+   private List<Lesson> tuesday = new ArrayList();
+   private List<Lesson> wednesday = new ArrayList();
+  private   List<Lesson> thursday = new ArrayList();
+    private List<Lesson> friday = new ArrayList();
+
+
+
+    public List<Lesson> getMonday() {
+        return monday;
+    }
+
+    public List<Lesson> getTuesday() {
+        return tuesday;
+    }
+
+    public List<Lesson> getWednesday() {
+        return wednesday;
+    }
+
+    public List<Lesson> getThursday() {
+        return thursday;
+    }
+
+    public List<Lesson> getFriday() {
+        return friday;
+    }
 
     public Person getStudents() {
         return students;
@@ -38,7 +60,7 @@ public class Database {
     }
 
     public Course searchCourse(String string) {
-        for (Course course : courseList) {
+        for (Course course : getCourseList()) {
             if (string.equalsIgnoreCase(course.getName())) {
                 return course;
             }
@@ -47,7 +69,7 @@ public class Database {
     }
 
     public Person searchTeacher(String string) {
-        for (Person person : teachers.getPersons()) {
+        for (Person person : getTeachers().getPersons()) {
             if (string.equalsIgnoreCase(person.getName())) {
                 return person;
             }
@@ -56,7 +78,7 @@ public class Database {
     }
 
     public Person searchStudent(String string) {
-        for (Person person : students.getPersons()) {
+        for (Person person : getStudents().getPersons()) {
             if (string.equalsIgnoreCase(person.getName())) {
                 return person;
             }
@@ -79,7 +101,7 @@ public class Database {
     public String printTeacher(String teacherToSearchAndPrint) {
         Person teacher = searchTeacher(teacherToSearchAndPrint);
 
-        String textToPrint = "Namn: " + teacher.getName() + "\n" + "Ålder: " + teacher.getAge() + "\n" + "Mail: " + teacher.getMail() + "\n" + "Telefonnummer: " + teacher.getNumber() + "\n" + teacher.getName() + " utbildar de här kurserna: ";
+        String textToPrint = "Namn: " + teacher.getName() + "\n" + "Ålder: " + teacher.getAge() + "\n" + "Mail: " + teacher.getMail() + "\n" + "Telefonnummer: " + teacher.getNumber() + "\n" +"\n" + teacher.getName() + " utbildar de här kurserna: ";
 
 
         for (Course findCourse : teacher.getCourses()){
@@ -87,7 +109,7 @@ public class Database {
         }
 
 
-        textToPrint += "\n" + teacher.getName() + " är lärare över de här eleverna: ";
+        textToPrint += "\n" + "\n" + teacher.getName() + " är lärare över de här eleverna: ";
 
         for (Course courseStudents : teacher.getCourses()){
             for (Person studentInClass : courseStudents.getCourseStudentList()){
@@ -98,24 +120,61 @@ public class Database {
         }
 
 
+        textToPrint  += findScheduleForTeacher(teacher);
+
         return textToPrint;
     }
 
     public String printStudent(String studentToSearchAndPrint) {
         Person studentName = searchStudent(studentToSearchAndPrint);
 
-        String textToPrint = "Namn: " + studentName.getName() + "\n" + "Ålder: " + studentName.getAge() + "\n" + "Mail: " + studentName.getMail() + "\n" + "Telefonnummer: " + studentName.getNumber() + "\n" + studentName.getName() + " går på dom här kurserna: ";
+        String textToPrint = "Namn: " + studentName.getName() + "\n" + "Ålder: " + studentName.getAge() + "\n" + "Mail: " + studentName.getMail() + "\n" + "Telefonnummer: " + studentName.getNumber() +"\n" +"\n" + studentName.getName() + " går på dom här kurserna: ";
 
         for (Course coursesStudentIsIn : studentName.getCourses()){
             textToPrint += "\n" + coursesStudentIsIn.getName();
         }
 
-        textToPrint += "\n" + studentName.getName() + " blir utbildad av de här lärarna: ";
+        textToPrint += "\n" + "\n" + studentName.getName() + " blir utbildad av de här lärarna: ";
 
         for (Course coursesStudentHas : studentName.getCourses()){
                 textToPrint += "\n" + coursesStudentHas.getTeacher().getName();
         }
 
+
+
+        return textToPrint;
+    }
+
+    public String findScheduleForTeacher(Person teacher){
+        String textToPrint = "";
+
+        textToPrint += "\n"+ "\n" + "Schema: ";
+        textToPrint += "\n" + "Måndag: ";
+        textToPrint += findLessonForTeacher(getMonday(), teacher);
+        textToPrint += "\n" + "Tisdag: ";
+        textToPrint += findLessonForTeacher(getTuesday(), teacher);
+        textToPrint += "\n" +  "Onsdag: ";
+        textToPrint += findLessonForTeacher(getWednesday(), teacher);
+        textToPrint += "\n" + "Torsdag: ";
+        textToPrint += findLessonForTeacher(getThursday(), teacher);
+        textToPrint += "\n" + "Fredag: ";
+        textToPrint += findLessonForTeacher(getFriday(), teacher);
+
+        return textToPrint;
+    }
+
+    public String findLessonForTeacher(List<Lesson> LessonOfTheDay, Person teacher){
+        String textToPrint = "";
+
+        for (Lesson lessons : LessonOfTheDay){
+                if (lessons.getCourse().getTeacher().getName().equalsIgnoreCase(teacher.getName())){
+                    textToPrint += "\n" + lessons.getCourse().getName() + " " + lessons.getLessonStart() + " - " + lessons.getLessonEnd();
+                }
+
+        }
+        if (textToPrint == ""){
+            return "Ledig!";
+        }
 
         return textToPrint;
     }
@@ -144,10 +203,10 @@ public class Database {
         Person teacherThree = new Person("Anders", "51", "Anders@mail.com", "0735654655");
         Person teacherFour = new Person("Lars", "30", "Lars@mail.com", "073565465");
 
-        Course courseOne = new Course("Svenska", teacherThree);
-        Course courseTwo = new Course("Java", teacherFour);
-        Course courseThree = new Course("Matematik", teacherTwo);
-        Course courseFour = new Course("Idrott", teacherOne);
+        Course courseSvenska = new Course("Svenska", teacherThree);
+        Course courseJava = new Course("Java", teacherFour);
+        Course courseMatematik = new Course("Matematik", teacherTwo);
+        Course courseIdrott = new Course("Idrott", teacherOne);
 
         Person studentOne = new Person("Lily", "14", "lily@mail.com", "0723221354");
         Person studentTwo = new Person("Simon", "12", "simon_kool@mail.com", "0756516516");
@@ -155,30 +214,30 @@ public class Database {
         Person studentFour = new Person("Kalle", "15", "kalle@mail.com", "654165131");
         Person studentFive = new Person("Elias", "14", "elias@mail.se", "6541321321");
 
-        teacherOne.addCourses(courseFour);
-        teacherTwo.addCourses(courseThree);
-        teacherThree.addCourses(courseOne);
-        teacherFour.addCourses(courseTwo);
+        teacherOne.addCourses(courseIdrott);
+        teacherTwo.addCourses(courseMatematik);
+        teacherThree.addCourses(courseSvenska);
+        teacherFour.addCourses(courseJava);
 
-        studentOne.addCourses(courseOne);
-        studentOne.addCourses(courseFour);
-        studentOne.addCourses(courseThree);
+        studentOne.addCourses(courseSvenska);
+        studentOne.addCourses(courseIdrott);
+        studentOne.addCourses(courseMatematik);
 
-        studentTwo.addCourses(courseOne);
+        studentTwo.addCourses(courseSvenska);
 
-        studentThree.addCourses(courseOne);
-        studentThree.addCourses(courseTwo);
+        studentThree.addCourses(courseSvenska);
+        studentThree.addCourses(courseJava);
 
-        studentFour.addCourses(courseFour);
+        studentFour.addCourses(courseIdrott);
 
-        studentFive.addCourses(courseTwo);
-        studentFive.addCourses(courseThree);
-        studentFive.addCourses(courseFour);
+        studentFive.addCourses(courseJava);
+        studentFive.addCourses(courseMatematik);
+        studentFive.addCourses(courseIdrott);
 
-        addCourse(courseOne);
-        addCourse(courseTwo);
-        addCourse(courseThree);
-        addCourse(courseFour);
+        addCourse(courseSvenska);
+        addCourse(courseJava);
+        addCourse(courseMatematik);
+        addCourse(courseIdrott);
 
         addStudent(studentOne);
         addStudent(studentTwo);
@@ -191,34 +250,37 @@ public class Database {
         addTeacher(teacherTwo);
         addTeacher(teacherFour);
 
-        courseOne.addStudent(studentOne);
-        courseOne.addStudent(studentTwo);
-        courseOne.addStudent(studentThree);
+        courseSvenska.addStudent(studentOne);
+        courseSvenska.addStudent(studentTwo);
+        courseSvenska.addStudent(studentThree);
 
-        courseTwo.addStudent(studentThree);
-        courseTwo.addStudent(studentFive);
+        courseJava.addStudent(studentThree);
+        courseJava.addStudent(studentFive);
 
-        courseThree.addStudent(studentOne);
-        courseThree.addStudent(studentFive);
+        courseMatematik.addStudent(studentOne);
+        courseMatematik.addStudent(studentFive);
 
-        courseFour.addStudent(studentFour);
-        courseFour.addStudent(studentFive);
-        courseFour.addStudent(studentOne);
+        courseIdrott.addStudent(studentFour);
+        courseIdrott.addStudent(studentFive);
+        courseIdrott.addStudent(studentOne);
 
-        addMondayLesson(new Lesson("Java", "09:00", "12:00"));
-        addMondayLesson(new Lesson("Svenska" ,"13:00","15:00"));
 
-        addTuesdayLesson(new Lesson("Matematik", "10:00", "12:00"));
-        addTuesdayLesson(new Lesson("Idrott", "13:00", "15:00"));
+        addMondayLesson(new Lesson(courseJava, "09:00", "12:00"));
+        addMondayLesson(new Lesson(courseSvenska ,"13:00","15:00"));
 
-        addWednesdayLesson(new Lesson("Java", "08:00", "12:00"));
-        addWednesdayLesson(new Lesson("Matematik", "13:00", "15:00"));
+        addTuesdayLesson(new Lesson(courseMatematik, "10:00", "12:00"));
+        addTuesdayLesson(new Lesson(courseIdrott, "13:00", "15:00"));
 
-        addThursdayLesson(new Lesson("Svenska", "10:00", "12:00"));
-        addThursdayLesson(new Lesson("Idrott", "13:00", "15:00"));
+        addWednesdayLesson(new Lesson(courseJava, "08:00", "12:00"));
+        addWednesdayLesson(new Lesson(courseMatematik, "13:00", "15:00"));
 
-        addFridayLesson(new Lesson("Java", "09:00", "12:00"));
-        addFridayLesson(new Lesson("Matematik", "13:00", "15:00"));
+        addThursdayLesson(new Lesson(courseSvenska, "10:00", "12:00"));
+        addThursdayLesson(new Lesson(courseIdrott, "13:00", "15:00"));
+
+        addFridayLesson(new Lesson(courseJava, "09:00", "12:00"));
+        addFridayLesson(new Lesson(courseMatematik, "13:00", "15:00"));
+
+
 
 
     }

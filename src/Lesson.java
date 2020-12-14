@@ -7,11 +7,19 @@ import java.time.LocalTime;
  * Project: Skolsystem VG
  * Copyright: MIT
  */
-public class Lesson extends Database {
-    Course course;
+public class Lesson {
 
-    LocalTime lessonStart;
-    LocalTime lessonEnd;
+
+    private Course course;
+    private LocalTime lessonStart;
+    private LocalTime lessonEnd;
+
+
+
+
+    public Course getCourse() {
+        return course;
+    }
 
     public void setCourse(Course course) {
         this.course = course;
@@ -25,8 +33,9 @@ public class Lesson extends Database {
         this.lessonEnd = lessonEnd;
     }
 
-    Lesson(String course, String start, String end){
-        setCourse(searchCourse(course));
+    Lesson(Course course, String start, String end){
+
+        setCourse(course);
         setLessonStart(LocalTime.parse(start));
         setLessonEnd(LocalTime.parse(end));
     }
@@ -40,10 +49,10 @@ public class Lesson extends Database {
     }
 
     public LocalTime lengthOfLesson(){
-      LocalTime lenght = getLessonEnd().minusHours(getLessonStart().getHour());
-      lenght.minusMinutes(getLessonStart().getMinute());
+      LocalTime length = getLessonEnd().minusHours(getLessonStart().getHour());
+      length.minusMinutes(getLessonStart().getMinute());
 
-      return lenght;
+      return length;
     }
 
 }

@@ -44,7 +44,7 @@ public class UserLoggedIn extends JFrame {
 
 
         add(bottomPanel);
-        setSize(500, 500);
+        setSize(500, 700);
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,7 +55,7 @@ public class UserLoggedIn extends JFrame {
                 if (course == null){
                     infoField.setText("Kursen finns inte");
                 }
-                else{
+                else {
                     infoField.setText(d.printCourse(searchField.getText()));
                 }
 
