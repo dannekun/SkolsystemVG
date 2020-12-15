@@ -194,7 +194,7 @@ public class Database {
             }
 
 
-        if (textToPrint == ""){
+        if (textToPrint.equals("")){
             return  "\nInga lektioner tillsammans!";
         }else {
             return textToPrint;
@@ -250,7 +250,7 @@ public class Database {
         }
 
 
-        if (textToPrint == ""){
+        if (textToPrint.equals("")){
             return  "\nLedig!";
         }else {
             return textToPrint;

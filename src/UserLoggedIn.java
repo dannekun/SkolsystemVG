@@ -19,7 +19,7 @@ public class UserLoggedIn extends JFrame {
     private JPanel centerPanel = new JPanel();
 
     private JButton scheduleButton = new JButton("Schema");
-    private JButton compareSchedule = new JButton("Jämför schema");
+    private JButton compareScheduleButton = new JButton("Jämför schema");
 
 
     public UserLoggedIn(){
@@ -38,7 +38,7 @@ public class UserLoggedIn extends JFrame {
         southPanel.add(courseSearch);
         southPanel.add(infoButton);
         southPanel.add(scheduleButton);
-        southPanel.add(compareSchedule);
+        southPanel.add(compareScheduleButton);
 
         centerPanel.add(infoField, BorderLayout.NORTH);
         centerPanel.add(searchField, BorderLayout.SOUTH);
@@ -104,7 +104,7 @@ public class UserLoggedIn extends JFrame {
             }
         });
 
-        compareSchedule.addActionListener(e -> {
+        compareScheduleButton.addActionListener(e -> {
             if (!searchField.getText().isEmpty()){
                String output = d.compareSchedule(searchField.getText());
                 infoField.setText(output);
