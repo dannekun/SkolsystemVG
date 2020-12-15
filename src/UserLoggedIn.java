@@ -18,12 +18,15 @@ public class UserLoggedIn extends JFrame {
     private JPanel southPanel = new JPanel();
     private JPanel centerPanel = new JPanel();
 
+    private JButton scheduleButton = new JButton("Schema");
+    private JButton compareSchedule = new JButton("Jämför schema");
+
 
     public UserLoggedIn(){
 
         bottomPanel.setLayout(new BorderLayout());
         northPanel.setLayout(new BorderLayout());
-        southPanel.setLayout(new GridLayout(2, 2));
+        southPanel.setLayout(new GridLayout(3, 3));
         centerPanel.setLayout(new BorderLayout());
 
         bottomPanel.add(northPanel, BorderLayout.NORTH);
@@ -34,6 +37,8 @@ public class UserLoggedIn extends JFrame {
         southPanel.add(studentSearch);
         southPanel.add(courseSearch);
         southPanel.add(infoButton);
+        southPanel.add(scheduleButton);
+        southPanel.add(compareSchedule);
 
         centerPanel.add(infoField, BorderLayout.NORTH);
         centerPanel.add(searchField, BorderLayout.SOUTH);
@@ -87,6 +92,23 @@ public class UserLoggedIn extends JFrame {
                     "\n------------------Kontakt------------------\n" +
                     "Telefonnummer: 0738347612\n" +
                     "Mail: nackamagin@gmail.com");
+        });
+
+        scheduleButton.addActionListener(e->{
+            if (!searchField.getText().isEmpty()){
+               String output = d.findSchedule(searchField.getText());
+               if (d.searchCourse(searchField.getText()) == null && d.searchStudent(searchField.getText()) == null && d.searchTeacher(searchField.getText()) == null){
+                   output = "Kunde inte hitta något!";
+               }
+               infoField.setText(output);
+            }
+        });
+
+        compareSchedule.addActionListener(e -> {
+            if (!searchField.getText().isEmpty()){
+               String output = d.compareSchedule(searchField.getText());
+                infoField.setText(output);
+            }
         });
 
         searchField.addKeyListener(new KeyAdapter() {

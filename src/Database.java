@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Database {
 
@@ -119,9 +120,6 @@ public class Database {
             }
         }
 
-
-        textToPrint  += findScheduleForTeacher(teacher);
-
         return textToPrint;
     }
 
@@ -145,38 +143,120 @@ public class Database {
         return textToPrint;
     }
 
-    public String findScheduleForTeacher(Person teacher){
+    public String compareSchedule(String input){
+        if (!input.contains(" ")){
+            return "Skriv in två elever som går här! \nT.ex Daniel Simon";
+        }
+        int findspace = input.indexOf(" ");
+        String firstName = input.substring(0, findspace);
+        String secondName = input.substring(findspace+1);
+
+        Person firstPerson = searchStudent(firstName);
+        Person secondPerson = searchStudent(secondName);
+
+        if (firstPerson == null || secondPerson == null){
+            return "Skriv in två elever som går här! \nT.ex Daniel Simon";
+        }else {
+            return findScheduleToCompare(firstPerson, secondPerson);
+        }
+
+
+
+
+
+    }
+
+    public String findScheduleToCompare(Person firstName, Person secondName){
         String textToPrint = "";
 
-        textToPrint += "\n"+ "\n" + "Schema: ";
+        textToPrint += "Schema för " + firstName.getName() + " & " + secondName.getName() + ": " ;
         textToPrint += "\n" + "Måndag: ";
-        textToPrint += findLessonForTeacher(getMonday(), teacher);
+        textToPrint += findLessonToCompare(getMonday(), firstName, secondName);
         textToPrint += "\n" + "Tisdag: ";
-        textToPrint += findLessonForTeacher(getTuesday(), teacher);
+        textToPrint += findLessonToCompare(getTuesday(), firstName,secondName);
         textToPrint += "\n" +  "Onsdag: ";
-        textToPrint += findLessonForTeacher(getWednesday(), teacher);
+        textToPrint += findLessonToCompare(getWednesday(), firstName,secondName);
         textToPrint += "\n" + "Torsdag: ";
-        textToPrint += findLessonForTeacher(getThursday(), teacher);
+        textToPrint += findLessonToCompare(getThursday(), firstName,secondName);
         textToPrint += "\n" + "Fredag: ";
-        textToPrint += findLessonForTeacher(getFriday(), teacher);
+        textToPrint += findLessonToCompare(getFriday(), firstName,secondName);
 
         return textToPrint;
     }
 
-    public String findLessonForTeacher(List<Lesson> LessonOfTheDay, Person teacher){
+    public String findLessonToCompare(List<Lesson> lessonOfTheDay, Person firstname, Person secondName){
         String textToPrint = "";
 
-        for (Lesson lessons : LessonOfTheDay){
-                if (lessons.getCourse().getTeacher().getName().equalsIgnoreCase(teacher.getName())){
+            for (Lesson lessons : lessonOfTheDay){
+                if (lessons.getCourse().getCourseStudentList().contains(firstname) && lessons.getCourse().getCourseStudentList().contains(secondName)){
                     textToPrint += "\n" + lessons.getCourse().getName() + " " + lessons.getLessonStart() + " - " + lessons.getLessonEnd();
                 }
+            }
 
-        }
+
         if (textToPrint == ""){
-            return "Ledig!";
+            return  "\nInga lektioner tillsammans!";
+        }else {
+            return textToPrint;
         }
+
+    }
+
+    public String findSchedule(String input){
+        String textToPrint = "";
+
+        String capitalLetter = input.substring(0,1);
+        input = capitalLetter.toUpperCase() + input.substring(1).toLowerCase();
+
+        textToPrint +=  "Schema för " + input + ": " ;
+        textToPrint += "\n" + "Måndag: ";
+        textToPrint += findLesson(getMonday(), input);
+        textToPrint += "\n" + "Tisdag: ";
+        textToPrint += findLesson(getTuesday(), input);
+        textToPrint += "\n" +  "Onsdag: ";
+        textToPrint += findLesson(getWednesday(), input);
+        textToPrint += "\n" + "Torsdag: ";
+        textToPrint += findLesson(getThursday(), input);
+        textToPrint += "\n" + "Fredag: ";
+        textToPrint += findLesson(getFriday(), input);
 
         return textToPrint;
+    }
+
+    public String findLesson(List<Lesson> lessonOfTheDay, String input){
+        String textToPrint = "";
+
+        if (searchStudent(input) != null){
+            for (Lesson lessons : lessonOfTheDay){
+                for (Person p : lessons.getCourse().getCourseStudentList()){
+                    if (p.getName().equalsIgnoreCase(input)){
+                        textToPrint += "\n" + lessons.getCourse().getName() + " " + lessons.getLessonStart() + " - " + lessons.getLessonEnd();
+                    }
+                }
+            }
+        }else if (searchTeacher(input) != null){
+            for (Lesson lessons : lessonOfTheDay){
+                if (lessons.getCourse().getTeacher().getName().equalsIgnoreCase(input)){
+                    textToPrint += "\n" + lessons.getCourse().getName() + " " + lessons.getLessonStart() + " - " + lessons.getLessonEnd();
+                }
+            }
+
+        }else if (searchCourse(input) != null){
+            for (Lesson lessons : lessonOfTheDay){
+                if (lessons.getCourse().getName().equalsIgnoreCase(input)){
+                    textToPrint += "\n" + lessons.getCourse().getName() + " " + lessons.getLessonStart() + " - " + lessons.getLessonEnd();
+                }
+            }
+        }
+
+
+        if (textToPrint == ""){
+            return  "\nLedig!";
+        }else {
+            return textToPrint;
+        }
+
+
     }
 
     public void addMondayLesson(Lesson lesson){
