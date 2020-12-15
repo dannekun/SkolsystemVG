@@ -12,14 +12,14 @@ public class UserLoggedIn extends JFrame {
     private JButton teacherSearch = new JButton("Sök efter lärare");
     private JButton studentSearch = new JButton("Sök efter elever");
     private JButton infoButton = new JButton("Tryck för info om skolan");
+    private JButton scheduleButton = new JButton("Schema");
+    private JButton compareScheduleButton = new JButton("Jämför schema");
     private JTextField searchField = new JTextField("Sök här");
     private JPanel bottomPanel = new JPanel();
     private JPanel northPanel = new JPanel();
     private JPanel southPanel = new JPanel();
     private JPanel centerPanel = new JPanel();
 
-    private JButton scheduleButton = new JButton("Schema");
-    private JButton compareScheduleButton = new JButton("Jämför schema");
 
 
     public UserLoggedIn(){

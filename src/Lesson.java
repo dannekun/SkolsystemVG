@@ -48,11 +48,4 @@ public class Lesson {
         return lessonEnd;
     }
 
-    public LocalTime lengthOfLesson(){
-      LocalTime length = getLessonEnd().minusHours(getLessonStart().getHour());
-      length.minusMinutes(getLessonStart().getMinute());
-
-      return length;
-    }
-
 }
